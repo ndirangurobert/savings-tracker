@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101b32">
+  <meta name="description" content="SaveWise — a simple personal savings tracker.">
+  <title>SaveWise — Savings Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="SaveWise home"><span class="brand-mark">S</span><span>save<span class="brand-light">wise</span></span></a>
+      <div class="side-label">WORKSPACE</div>
+      <nav class="nav-list" aria-label="Main navigation">
+        <button class="nav-link active" data-view="overview"><span class="nav-icon">▦</span>Overview</button>
+        <button class="nav-link" data-view="transactions"><span class="nav-icon">↕</span>Transactions</button>
+        <button class="nav-link" data-view="goals"><span class="nav-icon">◎</span>My goals</button>
+        <button class="nav-link" data-view="reports"><span class="nav-icon">▥</span>Reports</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="tip-card"><div class="tip-icon">✦</div><strong>Small steps add up.</strong><p>Consistency is more important than the size of your first deposit.</p></div>
+        <div class="profile-mini"><div class="avatar">Y</div><div><strong id="profileName">Your savings</strong><small>Personal workspace</small></div><span class="online-dot"></span></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Toggle menu">☰</button>
+        <div class="breadcrumb">Workspace <span>/</span> <strong id="pageCrumb">Overview</strong></div>
+        <div class="top-actions"><span class="today-label" id="todayLabel"></span><button class="icon-button" id="exportBtn" title="Export transactions">⇩</button><button class="primary-button small" id="quickAdd">＋ Add money</button></div>
+      </header>
+
+      <section class="page-view active" id="overviewView">
+        <div class="welcome-row"><div><p class="eyebrow">YOUR MONEY, YOUR PLAN</p><h1>Good things take <span>saving.</span></h1><p class="muted">Keep track of every step towards your goals.</p></div><div class="date-chip">◷ <span id="dateLong"></span></div></div>
+        <div class="summary-grid">
+          <article class="summary-card dark-card"><div class="card-top"><span>Total savings</span><span class="card-symbol">↗</span></div><div class="amount" id="totalSavings">KES 0</div><div class="card-foot"><span class="status-dot"></span> Your current saved balance</div><div class="card-decoration"></div></article>
+          <article class="summary-card"><div class="card-top"><span>Saved this month</span><span class="soft-icon green">＋</span></div><div class="amount" id="monthSavings">KES 0</div><div class="card-foot muted">Deposits made this month</div></article>
+          <article class="summary-card"><div class="card-top"><span>Active goals</span><span class="soft-icon purple">◎</span></div><div class="amount" id="activeGoals">0</div><div class="card-foot muted">Goals you are working on</div></article>
+          <article class="summary-card"><div class="card-top"><span>Goal progress</span><span class="soft-icon orange">⌁</span></div><div class="amount" id="overallProgress">0%</div><div class="card-foot muted">Across all your goals</div></article>
+        </div>
+        <div class="content-grid">
+          <section class="panel chart-panel"><div class="panel-heading"><div><h2>Savings activity</h2><p class="muted">Your deposits over the last 6 months</p></div><span class="chart-tag">KES</span></div><div class="chart-wrap"><div class="y-labels"><span>Top</span><span>Mid</span><span>Start</span></div><div class="chart-area"><div class="chart-grid"><i></i><i></i><i></i><i></i></div><svg id="savingsChart" viewBox="0 0 620 210" preserveAspectRatio="none" role="img" aria-label="Savings activity chart"><defs><linearGradient id="areaFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#8bdfbd" stop-opacity=".38"/><stop offset="100%" stop-color="#8bdfbd" stop-opacity="0"/></linearGradient></defs><path id="chartArea" d="" fill="url(#areaFill)"></path><path id="chartLine" d="" fill="none" stroke="#43b88c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path><g id="chartDots"></g></svg><div class="x-labels" id="chartLabels"></div></div></div></section>
+          <section class="panel goals-panel"><div class="panel-heading"><div><h2>Goal progress</h2><p class="muted">Keep your eye on the prize</p></div><button class="text-button" data-go-view="goals">View all →</button></div><div id="overviewGoals" class="goal-list"><div class="empty-state compact">Add a savings goal to see your progress here.</div></div><button class="outline-button full-button" data-go-view="goals">＋ Create a goal</button></section>
+        </div>
+        <section class="panel recent-panel"><div class="panel-heading"><div><h2>Recent transactions</h2><p class="muted">Your latest savings activity</p></div><button class="text-button" data-go-view="transactions">See all →</button></div><div class="table-wrap"><table><thead><tr><th>DESCRIPTION</th><th>DATE</th><th>TYPE</th><th class="align-right">AMOUNT</th></tr></thead><tbody id="recentRows"></tbody></table></div></section>
+      </section>
+
+      <section class="page-view" id="transactionsView">
+        <div class="page-heading"><div><p class="eyebrow">MONEY IN MOTION</p><h1>Transactions</h1><p class="muted">A clear record of your deposits and withdrawals.</p></div><button class="primary-button" id="transactionAdd">＋ Add transaction</button></div>
+        <section class="panel"><div class="filter-row"><div class="search-box">⌕ <input id="searchTransactions" type="search" placeholder="Search transactions..."></div><select id="typeFilter" aria-label="Filter by type"><option value="all">All types</option><option value="deposit">Deposits</option><option value="withdrawal">Withdrawals</option></select><select id="monthFilter" aria-label="Filter by month"><option value="all">All dates</option></select></div><div class="table-wrap"><table><thead><tr><th>DESCRIPTION</th><th>DATE</th><th>TYPE</th><th class="align-right">AMOUNT</th><th></th></tr></thead><tbody id="transactionRows"></tbody></table></div><div id="transactionEmpty" class="empty-state hidden">No transactions match your search.</div></section>
+      </section>
+
+      <section class="page-view" id="goalsView">
+        <div class="page-heading"><div><p class="eyebrow">MAKE IT HAPPEN</p><h1>My savings goals</h1><p class="muted">Give your savings a purpose and track your progress.</p></div><button class="primary-button" id="goalAdd">＋ New goal</button></div>
+        <div class="goal-summary-strip"><div><span class="muted">Total target</span><strong id="goalTargetTotal">KES 0</strong></div><div><span class="muted">Already saved</span><strong id="goalSavedTotal">KES 0</strong></div><div><span class="muted">Goals completed</span><strong id="goalCompleted">0</strong></div></div>
+        <div class="goals-grid" id="allGoals"></div>
+      </section>
+
+      <section class="page-view" id="reportsView">
+        <div class="page-heading"><div><p class="eyebrow">SEE THE BIG PICTURE</p><h1>Your reports</h1><p class="muted">Understand how your savings are growing.</p></div><button class="outline-button" id="reportExport">⇩ Export CSV</button></div>
+        <div class="summary-grid report-stats"><article class="summary-card"><div class="card-top">Total deposits</div><div class="amount" id="reportDeposits">KES 0</div><div class="card-foot muted">All recorded deposits</div></article><article class="summary-card"><div class="card-top">Total withdrawals</div><div class="amount" id="reportWithdrawals">KES 0</div><div class="card-foot muted">All recorded withdrawals</div></article><article class="summary-card"><div class="card-top">Net savings</div><div class="amount" id="reportNet">KES 0</div><div class="card-foot muted">Deposits less withdrawals</div></article><article class="summary-card"><div class="card-top">Transactions</div><div class="amount" id="reportCount">0</div><div class="card-foot muted">Total activity entries</div></article></div>
+        <section class="panel report-panel"><div class="panel-heading"><div><h2>Monthly breakdown</h2><p class="muted">Deposits and withdrawals by month</p></div></div><div id="monthlyBreakdown"></div></section>
+        <p class="report-note">Reports are calculated from the transactions saved in this browser.</p>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="transactionDialog" class="modal"><form id="transactionForm" method="dialog"><div class="modal-head"><div><p class="eyebrow">UPDATE YOUR BALANCE</p><h2 id="transactionModalTitle">Add transaction</h2></div><button type="button" class="close-button" data-close="transactionDialog">×</button></div><label>Description<input name="description" maxlength="70" placeholder="e.g. Weekly savings" required></label><div class="form-two"><label>Amount (KES)<input name="amount" type="number" min="1" step="0.01" placeholder="1000" required></label><label>Type<select name="type"><option value="deposit">Deposit</option><option value="withdrawal">Withdrawal</option></select></label></div><label>Date<input name="date" type="date" required></label><label>Note <span class="optional">(optional)</span><textarea name="note" rows="2" maxlength="180" placeholder="Add a short note..."></textarea></label><p class="form-error" id="transactionError"></p><div class="modal-actions"><button type="button" class="outline-button" data-close="transactionDialog">Cancel</button><button class="primary-button" type="submit">Save transaction</button></div></form></dialog>
+
+  <dialog id="goalDialog" class="modal"><form id="goalForm" method="dialog"><div class="modal-head"><div><p class="eyebrow">SET YOUR NEXT MILESTONE</p><h2>Create a savings goal</h2></div><button type="button" class="close-button" data-close="goalDialog">×</button></div><label>Goal name<input name="name" maxlength="55" placeholder="e.g. New laptop" required></label><div class="form-two"><label>Target amount (KES)<input name="target" type="number" min="1" step="0.01" placeholder="30000" required></label><label>Already saved (KES)<input name="saved" type="number" min="0" step="0.01" value="0" required></label></div><label>Target date <span class="optional">(optional)</span><input name="deadline" type="date"></label><label>Choose an icon<select name="icon"><option value="✦">✦ Personal</option><option value="⌂">⌂ Home</option><option value="▣">▣ Education</option><option value="◈">◈ Travel</option><option value="⚑">⚑ Emergency</option><option value="✧">✧ Other</option></select></label><p class="form-error" id="goalError"></p><div class="modal-actions"><button type="button" class="outline-button" data-close="goalDialog">Cancel</button><button class="primary-button" type="submit">Create goal</button></div></form></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
